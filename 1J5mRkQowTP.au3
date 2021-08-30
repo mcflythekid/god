@@ -1,17 +1,40 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_UseX64=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-#NoTrayIcon
+;#NoTrayIcon
 #include '_Startup.au3'
 #include <WinAPISys.au3>
 #include <Misc.au3>
 
-Const $SLEEP = 666
+Const $SLEEP = 444
 Const $KEY_VALUE = 'vSMv7x6i0Et23HL1YQmD'
 Const $KEY_FILE = 'god.txt'
-Const $PORN[] = [ "phim sex", "vlxx", "porn" ]
 
-Opt("WinTitleMatchMode",2)
+Const $PORN[] = [ _
+"phim sex", "phimsex", _
+"vlxx", "porn", _
+"clip sex", "clipsex", _
+"sex trung quoc", _
+"hình sex", "hinh sex", "hinhsex", _
+"truyện sex", "truyen sex", "truyensex", _
+"truyện dâm", "truyen dam", "truyendam", _
+"phim heo", "phimheo", _
+"phim con heo", "phimconheo", _
+"18+", "wapbold", _
+"kích dục", "kich duc", "kichduc", _
+"truyen nguoi lon", "truyện người lớn", _
+"tình dục", "tinh duc", "tinh duc", _
+"bú cu", "bu cu", "bucu", _
+"phim heo", "phim con heo", "phimheo", "phimconheo", _
+"cõi thiên thai", "coi thien thai", "coithienthai", _
+" sex ", _
+"thiendia" ]
+
+Const $DISTRACTION[] = [ _
+"facebook", "youtube", _
+"facebook" ]
+
+Opt("WinTitleMatchMode", -2)
 _Main()
 
 Func _Main()
@@ -22,40 +45,49 @@ Func _Main()
 		Local $isKeyNotFound = Not _CheckDrives()
 		Local $isNotOnWorkingHour = Not _IsOnWorkingHour()
 
-		If $isKeyNotFound Then
-			If $isNotOnWorkingHour Then _Lock()
-			_KillShit()
-			_KillPorn()
-		EndIf
+		If $isNotOnWorkingHour Then _SelfProtect()
+
+		If $isKeyNotFound And $isNotOnWorkingHour Then _Lock()
+		If $isKeyNotFound Then _KillDistraction()
+
+		_KillPorn() ; Always kill porn
 
 		Sleep($SLEEP)
 	WEnd
 EndFunc   ;==>_Main
 
-Func _KillShit()
+Func _SelfProtect()
+	ProcessClose("Taskmgr.exe")
+	WinKill("git\god")
+EndFunc
+
+Func _KillDistraction()
 	; Hosts
 	WinKill("C:\Windows\system32\Drivers\etc\hosts")
 	WinKill("C:\Windows\System32\drivers")
-	; Tor
-	ProcessClose("tor.exe")
-	ProcessClose("firefox.exe")
-	; Task manager
-	ProcessClose("Taskmgr.exe")
 	; LOL
 	ProcessClose("leagueclient.exe")
 	ProcessClose("leagueclientux.exe")
 	ProcessClose("leagueclientuxrender.exe")
 	ProcessClose("garena.exe")
-	#cs
+	; Distraction
 	ProcessClose("discord.exe")
 	ProcessClose("zalo.exe")
 	ProcessClose("zalocall.exe")
 	ProcessClose("zalocap.exe")
 	ProcessClose("zavimeet.exe")
-	#ce
-EndFunc
+	; Distraction template
+	For $i = 0 To UBound($DISTRACTION) - 1
+		If WinExists($DISTRACTION[$i]) Then
+			WinKill($DISTRACTION[$i])
+		EndIf
+	Next
+EndFunc   ;==> _KillDistraction
 
 Func _KillPorn()
+	; Tor (Porn)
+	ProcessClose("firefox.exe")
+
 	For $i = 0 To UBound($PORN) - 1
 		If WinExists($PORN[$i]) Then
 			WinKill($PORN[$i])
