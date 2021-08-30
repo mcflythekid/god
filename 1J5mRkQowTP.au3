@@ -1,7 +1,7 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_UseX64=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-;#NoTrayIcon
+#NoTrayIcon
 #include '_Startup.au3'
 #include <WinAPISys.au3>
 #include <Misc.au3>
@@ -27,7 +27,7 @@ Const $PORN[] = [ _
 "bú cu", "bu cu", "bucu", _
 "phim heo", "phim con heo", "phimheo", "phimconheo", _
 "cõi thiên thai", "coi thien thai", "coithienthai", _
-" sex ", _
+"sex", _
 "thiendia" ]
 
 Const $DISTRACTION[] = [ _
