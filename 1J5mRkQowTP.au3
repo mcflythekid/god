@@ -1,7 +1,8 @@
+#NoTrayIcon
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_UseX64=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-#NoTrayIcon
 #include '_Startup.au3'
 #include <WinAPISys.au3>
 #include <Misc.au3>
@@ -44,11 +45,12 @@ Func _Main()
 	While True
 		Local $isKeyNotFound = Not _CheckDrives()
 		Local $isNotOnWorkingHour = Not _IsOnWorkingHour()
+		Local $isNotOnFunHour = Not _IsOnFunHour()
 
 		If $isNotOnWorkingHour Then _SelfProtect()
 
 		If $isKeyNotFound And $isNotOnWorkingHour Then _Lock()
-		If $isKeyNotFound Then _KillDistraction()
+		If $isKeyNotFound And $isNotOnFunHour Then _KillDistraction()
 
 		_KillPorn() ; Always kill porn
 
@@ -71,6 +73,7 @@ Func _KillDistraction()
 	ProcessClose("leagueclientuxrender.exe")
 	ProcessClose("garena.exe")
 	; Distraction
+	ProcessClose("skype.exe")
 	ProcessClose("discord.exe")
 	ProcessClose("zalo.exe")
 	ProcessClose("zalocall.exe")
@@ -103,6 +106,10 @@ EndFunc   ;==>_Lock
 Func _IsOnWorkingHour()
 	Return @HOUR >= 6 and @hour <= 18
 EndFunc   ;=>_IsOnWorkingHour
+
+Func _IsOnFunHour()
+	Return @HOUR >= 12 and @hour <= 13 and @MIN <= 15
+EndFunc   ;=>_IsOnFunHour
 
 Func _CheckDrives()
 	Local $drives = DriveGetDrive($DT_REMOVABLE)
